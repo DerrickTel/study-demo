@@ -22,17 +22,34 @@
         // 放大倍数
         ctx.scale(ratio, ratio);
 
-        ctx.fillStyle = "red";
-        ctx.fillRect(10, 10, 55, 50);
+        ctx.lineWidth = 10
 
-        ctx.strokeStyle = 'green'
-        ctx.lineWidth = 4
-        ctx.strokeRect(80, 10, 55, 50)
+        // 空心 - 没有 closePath
+        ctx.beginPath();
+        ctx.moveTo(75, 50);
+        ctx.lineTo(100, 75);
+        ctx.lineTo(100, 25);
+        ctx.lineTo(75, 50);
+        // ctx.closePath();
+        ctx.stroke();
 
+        // 空心 - closePath
+        ctx.beginPath();
+        ctx.moveTo(275, 50);
+        ctx.lineTo(300, 75);
+        ctx.lineTo(300, 25);
+        // ctx.lineTo(275, 50);
+        // 有 closePath会自动首尾相连
+        ctx.closePath();
+        ctx.stroke();
 
-        ctx.fillStyle = "blue";
-        ctx.fillRect(160, 10, 55, 50);
-        ctx.clearRect(170, 20, 20, 20)
+        // 实心
+        ctx.beginPath();
+        ctx.moveTo(175, 50);
+        ctx.lineTo(200, 75);
+        ctx.lineTo(200, 25);
+        ctx.closePath();
+        ctx.fill();
       }
     }
   </script>
