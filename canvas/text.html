@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script type="application/javascript">
+
+    function hdCanvas (canvas, ratio) {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      canvas.style.width = rect.width + "px"
+      canvas.style.height = rect.height + "px"
+    }
+
+    function draw () {
+      const canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+        const ratio = window.devicePixelRatio || 1
+        hdCanvas(canvas, ratio)
+
+        // 放大倍数
+        ctx.scale(ratio, ratio);
+
+        ctx.fillText('test1', 10, 20)
+
+        ctx.font = "40px serif";
+
+        ctx.fillText('test2', 10, 60)
+
+        ctx.font = "bold 40px serif";
+
+        ctx.strokeText('test3', 10, 120)
+
+        ctx.beginPath()
+        ctx.moveTo(190, 0)
+        ctx.lineTo(190, 100)
+        ctx.stroke();
+
+        ctx.font = "20px serif";
+        ctx.textAlign = 'left';
+        ctx.fillText('left-aligned', 190, 40);
+
+        ctx.textAlign = 'center';
+        ctx.fillText('center-aligned', 190, 65);
+
+        ctx.textAlign = 'right';
+        ctx.fillText('right-aligned', 190, 90);
+
+        const baselines = ['top', 'hanging', 'middle', 'alphabetic', 'ideographic', 'bottom'];
+        ctx.font = '36px serif';
+        ctx.textAlign = 'left'
+        ctx.strokeStyle = 'red';
+
+        baselines.forEach((baseline, index) => {
+          ctx.textBaseline = baseline;
+          const y = 175 + index * 75;
+          ctx.beginPath();
+          ctx.moveTo(0, y + 0.5);
+          ctx.lineTo(550, y + 0.5);
+          ctx.stroke();
+          ctx.fillText(`Abcdefghijklmnop (${baseline})`, 0, y);
+        });
+
+        ctx.font = '48px serif';
+        ctx.fillText('Hi!', 450, 50);
+        ctx.direction = 'rtl';
+        ctx.fillText('Hi!', 450, 130);
+      }
+    }
+  </script>
+</head>
+
+<body onload="draw();">
+  <canvas style="border: 1px solid blue;" id="canvas" width="850" height="850"></canvas>
+</body>
+
+</html>
