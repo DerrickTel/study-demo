@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script type="application/javascript">
+
+    function hdCanvas (canvas, ratio) {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      canvas.style.width = rect.width + "px"
+      canvas.style.height = rect.height + "px"
+    }
+
+    function draw () {
+      const canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+        const ratio = window.devicePixelRatio || 1
+        hdCanvas(canvas, ratio)
+
+        // 放大倍数
+        ctx.scale(ratio, ratio);
+
+        // 钟的基础位置
+        const x = 70, y = 70, circle = 50, angle = Math.PI * 2
+
+        // 钟的底盘
+        ctx.arc(x, y, circle, 0, 2 * Math.PI)
+        ctx.stroke();
+        ctx.save()
+
+        // 钟的时间刻度
+        for(let i = 1; i <= 12; i += 1) {
+          const j = i - 3;
+          ctx.save()
+          ctx.translate(x, y)
+          ctx.translate(
+            // 减去文字宽度 / 高度 以及对应内敛数值
+            (circle - 7) * Math.cos(angle * j / 12) - ctx.measureText(i).width / 2,
+            (circle - 7) * Math.sin(angle * j / 12) + ctx.measureText(i).actualBoundingBoxAscent / 2
+          )
+          ctx.fillText(i, 0, 0)
+          ctx.restore()
+        }
+
+        // 获取此时此刻时间
+        const time = new Date()
+        // 制作时针
+        const hour = time.getHours()
+        ctx.save()
+        ctx.beginPath()
+        ctx.translate(x, y)
+        ctx.rotate(Math.PI * 2 * (hour - 3) / 12)
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0 + 15, 0);
+        ctx.lineWidth = 5
+        ctx.lineCap = 'round'
+        ctx.stroke()
+
+      }
+    }
+  </script>
+</head>
+
+<body onload="draw();">
+  <canvas style="border: 1px solid blue;" id="canvas" width="450" height="150"></canvas>
+</body>
+
+</html>

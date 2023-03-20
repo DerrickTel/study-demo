@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script type="application/javascript">
+
+    function hdCanvas (canvas, ratio) {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      canvas.style.width = rect.width + "px"
+      canvas.style.height = rect.height + "px"
+    }
+
+    function draw () {
+      const canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+        const ratio = window.devicePixelRatio || 1
+        hdCanvas(canvas, ratio)
+
+        // 放大倍数
+        ctx.scale(ratio, ratio);
+
+
+        let x = 1;
+        let y = 0;
+        const timer = setInterval(() => {
+          ctx.save()
+          ctx.beginPath();
+          ctx.clearRect(0,0,450,150)
+          ctx.translate(x, y)
+          ctx.arc(70, 80, 50, 0, Math.PI * 2, true);
+          ctx.stroke();
+          ctx.closePath();
+          ctx.restore();
+          if(x >= 300) {
+            x = 1
+          } else {
+            x += 1
+          }
+        }, 1000 / 10)
+
+      }
+    }
+  </script>
+</head>
+
+<body onload="draw();">
+  <canvas style="border: 1px solid blue;" id="canvas" width="450" height="150"></canvas>
+</body>
+
+</html>
