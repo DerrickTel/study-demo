@@ -22,43 +22,81 @@
         // 放大倍数
         ctx.scale(ratio, ratio);
 
-        // 钟的基础位置
-        const x = 70, y = 70, circle = 50, angle = Math.PI * 2
+        setInterval(() => {
+          ctx.clearRect(0, 0, 450, 150)
+          // 钟的基础位置
+          const x = 70, y = 70, circle = 50, angle = Math.PI * 2
 
-        // 钟的底盘
-        ctx.arc(x, y, circle, 0, 2 * Math.PI)
-        ctx.stroke();
-        ctx.save()
+          // 钟的底盘
+          ctx.beginPath()
+          ctx.arc(x, y, circle, 0, 2 * Math.PI)
+          ctx.stroke();
 
-        // 钟的时间刻度
-        for(let i = 1; i <= 12; i += 1) {
-          const j = i - 3;
+          // 钟的时间刻度
+          for (let i = 1; i <= 12; i += 1) {
+            const j = i - 3;
+            ctx.save()
+            ctx.translate(x, y)
+            ctx.translate(
+              // 减去文字宽度 / 高度 以及对应内敛数值
+              (circle - 7) * Math.cos(angle * j / 12) - ctx.measureText(i).width / 2,
+              (circle - 7) * Math.sin(angle * j / 12) + ctx.measureText(i).actualBoundingBoxAscent / 2
+            )
+            ctx.fillText(i, 0, 0)
+            ctx.restore()
+          }
+
+          // 获取此时此刻时间
+          const time = new Date()
+          const hour = time.getHours()
+          const minute = time.getMinutes()
+          const second = time.getSeconds()
+
+          // 制作时针
           ctx.save()
           ctx.translate(x, y)
-          ctx.translate(
-            // 减去文字宽度 / 高度 以及对应内敛数值
-            (circle - 7) * Math.cos(angle * j / 12) - ctx.measureText(i).width / 2,
-            (circle - 7) * Math.sin(angle * j / 12) + ctx.measureText(i).actualBoundingBoxAscent / 2
-          )
-          ctx.fillText(i, 0, 0)
+          // (12/4) 是修正旋转的角度; 然后加上分钟的修正角度
+          ctx.rotate(Math.PI * 2 * (hour - (12 / 4) + minute / 60) / 12)
+          ctx.beginPath()
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0 + 15, 0);
+          ctx.lineWidth = 4
+          ctx.lineCap = 'round'
+          ctx.stroke()
+          ctx.closePath()
           ctx.restore()
-        }
 
-        // 获取此时此刻时间
-        const time = new Date()
-        // 制作时针
-        const hour = time.getHours()
-        ctx.save()
-        ctx.beginPath()
-        ctx.translate(x, y)
-        ctx.rotate(Math.PI * 2 * (hour - 3) / 12)
-        ctx.moveTo(0, 0);
-        ctx.lineTo(0 + 15, 0);
-        ctx.lineWidth = 5
-        ctx.lineCap = 'round'
-        ctx.stroke()
+          // 制作分针
+          ctx.save()
+          ctx.translate(x, y)
+          // (60/4) 是修正旋转的角度;
+          ctx.rotate(Math.PI * 2 * (minute - (60 / 4)) / 60)
+          ctx.beginPath()
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0 + 25, 0);
+          ctx.lineWidth = 2
+          ctx.lineCap = 'round'
+          ctx.stroke()
+          ctx.closePath()
+          ctx.restore()
+
+          // 制作秒针
+          ctx.save()
+          ctx.translate(x, y)
+          // (60/4) 是修正旋转的角度;
+          ctx.rotate(Math.PI * 2 * (second - (60 / 4)) / 60)
+          ctx.beginPath()
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0 + 30, 0);
+          ctx.lineWidth = 1
+          ctx.lineCap = 'round'
+          ctx.stroke()
+          ctx.closePath()
+          ctx.restore()
+        }, 1000 / 60)
 
       }
+      // requestAnimationFrame(draw)
     }
   </script>
 </head>
