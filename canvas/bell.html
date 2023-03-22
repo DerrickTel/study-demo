@@ -25,7 +25,16 @@
         setInterval(() => {
           ctx.clearRect(0, 0, 450, 150)
           // 钟的基础位置
-          const x = 70, y = 70, circle = 50, angle = Math.PI * 2
+          const x = 70,
+                y = 70,
+                circle = 50,
+                angle = Math.PI * 2,
+                hourLength = 15,
+                minuteLength = 25,
+                secondLength = 30,
+                hourWidth = 4,
+                minuteWidth = 2,
+                secondWidth = 1
 
           // 钟的底盘
           ctx.beginPath()
@@ -34,7 +43,8 @@
 
           // 钟的时间刻度
           for (let i = 1; i <= 12; i += 1) {
-            const j = i - 3;
+            // 修正旋转角度
+            const j = i - (12 / 4);
             ctx.save()
             ctx.translate(x, y)
             ctx.translate(
@@ -59,8 +69,8 @@
           ctx.rotate(Math.PI * 2 * (hour - (12 / 4) + minute / 60) / 12)
           ctx.beginPath()
           ctx.moveTo(0, 0);
-          ctx.lineTo(0 + 15, 0);
-          ctx.lineWidth = 4
+          ctx.lineTo(0 + hourLength, 0);
+          ctx.lineWidth = hourWidth
           ctx.lineCap = 'round'
           ctx.stroke()
           ctx.closePath()
@@ -73,8 +83,8 @@
           ctx.rotate(Math.PI * 2 * (minute - (60 / 4)) / 60)
           ctx.beginPath()
           ctx.moveTo(0, 0);
-          ctx.lineTo(0 + 25, 0);
-          ctx.lineWidth = 2
+          ctx.lineTo(0 + minuteLength, 0);
+          ctx.lineWidth = minuteWidth
           ctx.lineCap = 'round'
           ctx.stroke()
           ctx.closePath()
@@ -87,8 +97,8 @@
           ctx.rotate(Math.PI * 2 * (second - (60 / 4)) / 60)
           ctx.beginPath()
           ctx.moveTo(0, 0);
-          ctx.lineTo(0 + 30, 0);
-          ctx.lineWidth = 1
+          ctx.lineTo(0 + secondLength, 0);
+          ctx.lineWidth = secondWidth
           ctx.lineCap = 'round'
           ctx.stroke()
           ctx.closePath()
