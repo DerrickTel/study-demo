@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script type="application/javascript">
+
+    function draw () {
+
+      const canvas = document.getElementById("canvas");
+
+      const div = document.getElementById("div");
+      const span = document.getElementById("span");
+
+      if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+        const img = new Image()
+        img.src = './img/colorPicker.jpeg'
+        img.onload = function() {
+          ctx.drawImage(img, 0, 0);
+          img.style.display = 'none';
+        };
+
+      }
+    }
+
+    function download() {
+
+      const canvas = document.getElementById("canvas");
+      // 创建一个 a 标签，并设置 href 和 download 属性
+      const el = document.createElement('a');
+      // 设置 href 为图片经过 base64 编码后的字符串，默认为 png 格式
+      el.href = canvas.toDataURL();
+      el.download = '文件名称';
+
+      // 创建一个点击事件并对 a 标签进行触发
+      const event = new MouseEvent('click');
+      el.dispatchEvent(event);
+    }
+  </script>
+</head>
+
+<body onload="draw();">
+  <canvas style="border: 1px solid blue;" id="canvas" width="400" height="400"></canvas>
+  <button onClick="download()">点我下载哦</button>
+</body>
+
+</html>
