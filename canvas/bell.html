@@ -23,18 +23,31 @@
         ctx.scale(ratio, ratio);
 
         setInterval(() => {
-          ctx.clearRect(0, 0, 450, 150)
+
+          ctx.fillStyle = 'rgba(255,255,255,0.3)';
+          ctx.fillRect(0,0, canvas.width, canvas.height);
+          // ctx.clearRect(0, 0, 450, 150)
           // 钟的基础位置
-          const x = 70,
-                y = 70,
-                circle = 50,
+          const x = 400,
+                y = 400,
+                circle = 350,
                 angle = Math.PI * 2,
-                hourLength = 15,
-                minuteLength = 25,
-                secondLength = 30,
-                hourWidth = 4,
-                minuteWidth = 2,
-                secondWidth = 1
+                // 刻度数字样式
+                numberSize = "48px serif",
+                // 刻度与表盘的间距
+                distance = 40,
+                // 时针长度
+                hourLength = 90,
+                // 分针长度
+                minuteLength = 200,
+                // 秒钟长度
+                secondLength = 230,
+                // 时针宽度
+                hourWidth = 20,
+                // 分针宽度
+                minuteWidth = 10,
+                // 秒针宽度
+                secondWidth = 5
 
           // 钟的底盘
           ctx.beginPath()
@@ -46,11 +59,13 @@
             // 修正旋转角度
             const j = i - (12 / 4);
             ctx.save()
+            ctx.fillStyle = 'black'
+            ctx.font = numberSize
             ctx.translate(x, y)
             ctx.translate(
               // 减去文字宽度 / 高度 以及对应内敛数值
-              (circle - 7) * Math.cos(angle * j / 12) - ctx.measureText(i).width / 2,
-              (circle - 7) * Math.sin(angle * j / 12) + ctx.measureText(i).actualBoundingBoxAscent / 2
+              (circle - distance) * Math.cos(angle * j / 12) - ctx.measureText(i).width / 2,
+              (circle - distance) * Math.sin(angle * j / 12) + ctx.measureText(i).actualBoundingBoxAscent / 2
             )
             ctx.fillText(i, 0, 0)
             ctx.restore()
@@ -112,7 +127,7 @@
 </head>
 
 <body onload="draw();">
-  <canvas style="border: 1px solid blue;" id="canvas" width="450" height="150"></canvas>
+  <canvas style="border: 1px solid blue;" id="canvas" width="900" height="850"></canvas>
 </body>
 
 </html>
